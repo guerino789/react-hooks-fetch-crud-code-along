@@ -1,26 +1,27 @@
-import { body } from "msw/lib/types/context";
+
 import React, { useState } from "react";
 
-function ItemForm() {
+function ItemForm({onAddItem}) {
   const [name, setName] = useState("");
   const [category, setCategory] = useState("Produce");
 
-  function handleSubmit(e){
-    e.preventDefault()
+  function handleSubmit(e) {
+    e.preventDefault();
     const itemData = {
       name: name,
       category: category,
-      inInCart: false
-    }
-    // fetch("http://localhost:4000/items", {
-    //   method: "POST",
-    //   headers: {
-    //     "content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(itemData)
-    // })
-    // .then((r) => r.json())
-    // .then((data) => console.log(data))
+      isInCart: false,
+    };
+    fetch("http://localhost:4000/items", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(itemData),
+    })
+      .then((r) => r.json())
+      .then((data) => onAddItem(data))
+      
   }
 
   return (
